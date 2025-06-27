@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  servicea:
+    image: servicea
+    build:
+      context: .
+      dockerfile: ServiceA/Dockerfile
+    ports:
+      - "8001:8080"
+      - "8002:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - microservices-network
+
+  serviceb:
+    image: serviceb
+    build:
+      context: .
+      dockerfile: ServiceB/Dockerfile
+    ports:
+      - "8003:8080"
+      - "8004:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - microservices-network
+
+  gateway:
+    image: gateway
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+    ports:
+      - "9000:8080"
+      - "9001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
